@@ -8,4 +8,6 @@ router.post("/", controller.createMovie);
 
 router.get("/:id", controller.getMovie);
 
+router.put("/:id", controller.updateMovie);
+
 module.exports = router;
