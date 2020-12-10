@@ -58,9 +58,38 @@ const updateMovie = (req, res) => {
   }
 }
 
+const updateWatchedStatus = (req, res) => {
+  try {
+    const movieId = req.params.id;
+    const watched = req.body.watched;
+    const movieToUpdate = movies.find(movie => movie.id == movieId);
+    const movieIndex = movies.indexOf(movieToUpdate);
+
+    if (movieIndex >= 0) {
+      movieToUpdate.watched = watched;
+      movies.splice(movieIndex, 1, movieToUpdate);
+    } else {
+      res.status(404).send({message: "Filme não encontrado"});
+    }
+
+    fs.writeFile("./src/models/movies.json", JSON.stringify(movies), "utf8", (err) => {
+      if (err) {
+        res.status(500).send({message: err});
+        return;
+      }
+      console.log("Arquivo atualizado com sucesso!");
+      const movieUpdated = movies.find((movie) => movie.id == movieId);
+      res.status(200).send(movieUpdated);
+    });
+  } catch(err) {
+    res.status(500).send({message: err});
+  }
+}
+
 module.exports = {
   getAllMovies,
   createMovie,
   getMovie,
   updateMovie,
+  updateWatchedStatus,
 };

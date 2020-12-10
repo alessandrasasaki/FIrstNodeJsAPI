@@ -10,4 +10,6 @@ router.get("/:id", controller.getMovie);
 
 router.put("/:id", controller.updateMovie);
 
+router.patch("/:id/watched", controller.updateWatchedStatus);
+
 module.exports = router;
