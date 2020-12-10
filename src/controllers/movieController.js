@@ -86,10 +86,38 @@ const updateWatchedStatus = (req, res) => {
   }
 }
 
+const deleteMovie = (req, res) => {
+  try {
+    const movieId = req.params.id;
+    const movieFound = movies.find(movie => movie.id == movieId);
+    const movieIndex = movies.indexOf(movieFound);
+
+    if (movieIndex >= 0) {
+      movies.splice(movieIndex, 1);
+    } else {
+        res.status(404).send({message: "Filme não encontrado para ser deletado"});
+    }
+
+    fs.writeFile("./src/models/movies.json", JSON.stringify(movies), "utf8", (err) => {
+      if (err) {
+        res.status(500).send({message: err});
+        return;
+      }
+      console.log("Filme deletado com sucesso!");
+      res.sendStatus(204);
+    })
+
+  } catch(err) {
+      console.log(err);
+      res.status(500).send({message: "Erro ao deletar filme"});
+  }
+}
+
 module.exports = {
   getAllMovies,
   createMovie,
   getMovie,
   updateMovie,
   updateWatchedStatus,
+  deleteMovie
 };
