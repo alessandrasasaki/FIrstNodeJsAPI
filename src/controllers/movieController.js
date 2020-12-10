@@ -21,7 +21,18 @@ const createMovie = (req, res)=> {
   })
 };
 
+const getMovie = (req, res) => {
+  const movieId = req.params.id;
+  const movieFound = movies.find((movie) => movie.id == movieId);
+  if (movieFound) {
+    res.status(200).send(movieFound);
+    return;
+  }
+  res.status(404).send({message: "Filme não encontrado"});
+}
+
 module.exports = {
   getAllMovies,
   createMovie,
+  getMovie,
 };

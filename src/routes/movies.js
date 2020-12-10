@@ -6,4 +6,6 @@ router.get("/", controller.getAllMovies);
 
 router.post("/", controller.createMovie);
 
+router.get("/:id", controller.getMovie);
+
 module.exports = router;
